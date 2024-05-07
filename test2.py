@@ -8,10 +8,8 @@ model = YOLO('yolov8n.pt')
 # Load video
 video_path = './langvideo.mp4'
 cap = cv2.VideoCapture(video_path)
-
+location = "Molde"
 ret = True
-
-location = "molde"
 
 # Read frames
 while ret:
@@ -33,12 +31,13 @@ while ret:
             class_label = results[0].names[class_id]  # Get class label from class ID
             print(f'Detected class: {class_label}')  # Print class label
 
-
-            #Save the frame with the date and time as the filename
-            current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            filename = f"{current_time}_{class_label}_{location}.jpg"
-            cv2.imwrite(filename, frame)
-            print(f"Saved image: {filename}")
+            # Check if the detected object is an airplane
+            if class_label == "airplane":
+                # Save the annotated frame with the date and time as the filename
+                current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                filename = f"{current_time}_{class_label}_{location}.jpg"
+                cv2.imwrite(filename, frame_)
+                print(f"Saved image: {filename}")
 
         # Visualize
         cv2.imshow('frame', frame_)
